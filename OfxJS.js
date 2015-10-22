@@ -62,6 +62,11 @@ var array = [
             "VERSION:102\n" +
             "SECURITY:NONE\n" +
             "ENCODING:USASCII\n" +
+            "CHARSET:1252\n" +header = "OFXHEADER:100\n"  +
+            "DATA:OFXSGML\n" +
+            "VERSION:102\n" +
+            "SECURITY:NONE\n" +
+            "ENCODING:USASCII\n" +
             "CHARSET:1252\n" +
             "COMPRESSION:NONE\n" +
             "OLDFILEUID:NONE\n" +
@@ -74,7 +79,7 @@ var array = [
                             "\t\t\t\t<CODE>0\n" +
                             "\t\t\t\t<SEVERITY>INFO\n" +
                         "\t\t\t</STATUS>\n"+
-                        "\t\t\t<DTSERVER>"+ serverDate +"[-3:GMT]\n"+
+                        "\t\t\t<DTSERVER>"+ strToGMT(serverDate); +"[-3:GMT]\n"+
                         "\t\t\t<LANGUAGE>ENG\n"+
                         "\t\t\t<FI>\n"+
                             "\t\t\t\t<ORG>"+ bankName +"\n"+
@@ -97,8 +102,8 @@ var array = [
                         "<ACCTTYPE>CHECKING\n"+
                     "</BANKACCTFROM>\n"+
                     "<BANKTRANLIST>\n"+
-                        "<DTSTART>" + startDate + "[-3:GMT]\n"+
-                        "<DTEND>"   + endDate   + "[-3:GMT]\n";
+                        "<DTSTART>" + strToGMT(startDate); + "[-3:GMT]\n"+
+                        "<DTEND>"   + strToGMT(endDate);   + "[-3:GMT]\n";
 
 for (var i = 0 ; i < array.length; i++) 
 {
@@ -117,7 +122,7 @@ for (var i = 0 ; i < array.length; i++)
 footer  = "</BANKTRANLIST>" +
               "<LEDGERBAL>\n" +
                       "\t<BALAMT>" + balance +"\n"+
-                      "\t<DTASOF> "+ serverDate +"[-3:GMT]\n"+
+                      "\t<DTASOF> "+ strToGMT(serverDate) +"[-3:GMT]\n"+
                   "</LEDGERBAL>\n" +
               "</STMTRS>\n"+
           "</STMTTRNRS>\n"+
@@ -125,12 +130,15 @@ footer  = "</BANKTRANLIST>" +
       "</OFX>";
 
 
-document.write("<center><h2>Press F12 KEY to See the Log</h2></center>");
+document.write("<center><h2> Parser CSV to OFX Format <br />By Arthur Henrique</h2></center>");
 
-console.log(header);
-console.log(transaction);
-console.log(footer);
+console.log(
 
+            header      + "\n" +   
+            transaction + "\n" + 
+            footer
+
+            );
 
 /* Format money                    */
 /* Receives string -> "100.000,00" */
@@ -154,3 +162,37 @@ function strToGMT(date)
 
   return year+month+day+"000000";
 }
+
+/* Receives string -> file name */
+/* Receives string -> text      */
+/* Return a file                */
+function download(filename, text) {
+
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+}
+
+/* Void */
+/* Call a download */
+function callDownload()
+{
+  var filename = bankName + " " + serverDate  + ".ofx" ;
+
+  var text     = header      + "\n" + 
+                 transaction + "\n" + 
+                 footer;
+
+  download(filename, text);
+
+}
+            
