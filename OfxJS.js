@@ -47,7 +47,7 @@ var balance     = "";
 
 
 // Fill array with your data
-// Note: In this case i use PegJs to parser csv to array format
+// Note: In this case I have used PegJS to parser csv to array format
 var array = [
      [
         "", /*Date*/
@@ -82,66 +82,75 @@ var array = [
                         "\t\t\t</FI>\n"+
                     "\t\t</SONRS>\n"+
                 "\t</SIGNONMSGSRSV1>\n"+
-                "<BANKMSGSRSV1>\n"+
-                    "<STMTTRNRS>\n"+
-                        "<TRNUID>1\n"+
-                        "<STATUS>\n"+
-                            "<CODE>0\n"+
-                            "<SEVERITY>INFO\n"+
-                        "</STATUS>\n"+
-                        "<STMTRS>\n"+
-                            "<CURDEF>BRC\n"+
-                            "<BANKACCTFROM>\n"+
-                                "<BANKID>" + bankId + "\n"+
-                                "<ACCTID>" + bankAccount + "\n"+
-                                "<ACCTTYPE>CHECKING\n"+
-                            "</BANKACCTFROM>\n"+
-                            "<BANKTRANLIST>\n"+
-                                "<DTSTART>" + startDate + "[-3:GMT]\n"+
-                                "<DTEND>"   + endDate   + "[-3:GMT]\n";
+        "<BANKMSGSRSV1>\n"+
+            "<STMTTRNRS>\n"+
+                "<TRNUID>1\n"+
+                "<STATUS>\n"+
+                    "<CODE>0\n"+
+                    "<SEVERITY>INFO\n"+
+                "</STATUS>\n"+
+                "<STMTRS>\n"+
+                    "<CURDEF>BRC\n"+
+                    "<BANKACCTFROM>\n"+
+                        "<BANKID>" + bankId + "\n"+
+                        "<ACCTID>" + bankAccount + "\n"+
+                        "<ACCTTYPE>CHECKING\n"+
+                    "</BANKACCTFROM>\n"+
+                    "<BANKTRANLIST>\n"+
+                        "<DTSTART>" + startDate + "[-3:GMT]\n"+
+                        "<DTEND>"   + endDate   + "[-3:GMT]\n";
 
-// Transactions Iterador according to the array
 for (var i = 0 ; i < array.length; i++) 
 {
    transaction += "<STMTTRN>\n" +
                         "\t<TRNTYPE>OTHER\n" +
-                        "\t<DTPOSTED> "  + strToGMT(array[i][0]) + "[-3:GMT]\n" +
-                        "\t<TRNAMT> "    + array[i][3] + "\n" +
-                        "\t<FITID>"      + array[i][2] + "\n" +
-                        "\t<CHECKNUM>"   + array[i][2] + "\n" +
-                        "\t<PAYEEID>0\n" +
-                        "\t<MEMO>"       + array[i][1] + "\n" +
+                        "\t<DTPOSTED> "  + strToGMT(array[i][0])   + "[-3:GMT]\n" +
+                        "\t<TRNAMT> "    + strToMoney(array[i][3]) + "\n"         +
+                        "\t<FITID>"      + array[i][2] + "\n"      +
+                        "\t<CHECKNUM>"   + array[i][2] + "\n"      +
+                        "\t<PAYEEID>0\n" +     
+                        "\t<MEMO>"       + array[i][1] + "\n"      +
                     "</STMTTRN>\n";
 };
 
 
-footer = "</BANKTRANLIST>" +
-            "<LEDGERBAL>\n" +
-                    "\t<BALAMT>" + balance +"\n"+
-                    "\t<DTASOF> "+ serverDate +"[-3:GMT]\n"+
-                "</LEDGERBAL>\n" +
-            "</STMTRS>\n"+
-        "</STMTTRNRS>\n"+
-    "</BANKMSGSRSV1>\n"+
-    "</OFX>";
+footer  = "</BANKTRANLIST>" +
+              "<LEDGERBAL>\n" +
+                      "\t<BALAMT>" + balance +"\n"+
+                      "\t<DTASOF> "+ serverDate +"[-3:GMT]\n"+
+                  "</LEDGERBAL>\n" +
+              "</STMTRS>\n"+
+          "</STMTTRNRS>\n"+
+      "</BANKMSGSRSV1>\n"+
+      "</OFX>";
 
+
+document.write("<center><h2>Press F12 KEY to See the Log</h2></center>");
 
 console.log(header);
 console.log(transaction);
 console.log(footer);
 
 
-/* Format date                     */
+/* Format money                    */
+/* Receives string -> "100.000,00" */
+/* Return string -> 100000,00      */
+function strToMoney(money)
+{
+  return money.replace(/[./]/, '');
+}
+
+
+/* Format European date            */
 /* Receives string -> "dd/mm/yyyy" */
 /* Return string -> yyyymmdd000000 */
 function strToGMT(date)
 {
-
-   var dateR = date.replace(/[TZ`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+   var dateR = date.replace(/[/]/gi, '');
 
    var day   = dateR.substring(dateR.length-6,0);
    var month = dateR.substring(dateR.length-6,4);
    var year  = dateR.substring(dateR.length,4)
 
-	return year+month+day+"000000";
+  return year+month+day+"000000";
 }
