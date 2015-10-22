@@ -2,14 +2,14 @@
   http://pegjs.org/online
   
   {
-    var separator = ',';
+    var separator = ';';
   }
 
   start
     = comma
 
   comma
-    = & { return separator = ','; } sv:sv { return sv; }
+    = & { return separator = ';'; } sv:sv { return sv; }
 
   tab
     = & { return separator = '\t'; } sv:sv { return sv; }
