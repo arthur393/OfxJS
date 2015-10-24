@@ -79,7 +79,7 @@ var array = [
                             "\t\t\t\t<CODE>0\n" +
                             "\t\t\t\t<SEVERITY>INFO\n" +
                         "\t\t\t</STATUS>\n"+
-                        "\t\t\t<DTSERVER>"+ strToGMT(serverDate); +"[-3:GMT]\n"+
+                        "\t\t\t<DTSERVER>"+ strToGMT(serverDate) +"[-3:GMT]\n"+
                         "\t\t\t<LANGUAGE>ENG\n"+
                         "\t\t\t<FI>\n"+
                             "\t\t\t\t<ORG>"+ bankName +"\n"+
@@ -102,8 +102,8 @@ var array = [
                         "<ACCTTYPE>CHECKING\n"+
                     "</BANKACCTFROM>\n"+
                     "<BANKTRANLIST>\n"+
-                        "<DTSTART>" + strToGMT(startDate); + "[-3:GMT]\n"+
-                        "<DTEND>"   + strToGMT(endDate);   + "[-3:GMT]\n";
+                        "<DTSTART>" + strToGMT(startDate) + "[-3:GMT]\n"+
+                        "<DTEND>"   + strToGMT(endDate)   + "[-3:GMT]\n";
 
 for (var i = 0 ; i < array.length; i++) 
 {
