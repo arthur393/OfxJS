@@ -57,20 +57,15 @@ var array = [
      ]
 ]   
 
- header = "OFXHEADER:100\n"  +
-            "DATA:OFXSGML\n" +
-            "VERSION:102\n" +
-            "SECURITY:NONE\n" +
+header    = "OFXHEADER:100\n"    +
+            "DATA:OFXSGML\n"     +
+            "VERSION:102\n"      +
+            "SECURITY:NONE\n"    +
             "ENCODING:USASCII\n" +
-            "CHARSET:1252\n" +header = "OFXHEADER:100\n"  +
-            "DATA:OFXSGML\n" +
-            "VERSION:102\n" +
-            "SECURITY:NONE\n" +
-            "ENCODING:USASCII\n" +
-            "CHARSET:1252\n" +
+            "CHARSET:1252\n"     +
             "COMPRESSION:NONE\n" +
-            "OLDFILEUID:NONE\n" +
-            "NEWFILEUID:NONE\n" +
+            "OLDFILEUID:NONE\n"  +
+            "NEWFILEUID:NONE\n"  +
             "\n" +
             "<OFX>\n" +
                 "\t<SIGNONMSGSRSV1>\n" +
